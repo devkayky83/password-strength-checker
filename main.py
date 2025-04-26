@@ -12,6 +12,16 @@ class PasswordChecker:
         except FileNotFoundError:
             return []
         
+    
+    def write_passwords(self, password, strength):
+        if password == "sair":
+            return []
+        with open('data/used_passwords.txt', 'a') as file:
+            file.write(f"Senha: {password} | Classificação: {strength}\n")
+            file.close()
+            
+    
+        
     def check_strength(self, password):
         if password in self.common_passwords:
             return "Fraca (senha comum)"
@@ -36,6 +46,8 @@ if __name__ == "__main__":
     checker = PasswordChecker()
     while True:
         senha = input("Digite uma senha para verificar (Digite 'sair' para encerrar): ")
+        strength = checker.check_strength(senha)
+        checker.write_passwords(senha,strength)
         if senha.lower() == 'sair':
             break
         print("Classificação:", checker.check_strength(senha))
